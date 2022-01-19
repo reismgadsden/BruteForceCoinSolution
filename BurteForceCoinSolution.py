@@ -58,21 +58,18 @@ def convertToChange(val, currency):
     # adds values up to max value
     counter = 1
     max_val = val
-    max_converted = []
+    max_converted = np.zeros(1, len(currency))
     while True:
         mod_val = max_val % (currency[-counter] + 1)
         max_val = max_val // (currency[-counter] + 1)
-        max_converted.insert(0, mod_val)
+        max_converted[0][len(currency) - counter] = mod_val
         if max_val == 0 or max_val == -1:
             break
         counter += 1
         if counter > len(currency):
             counter = 1
 
-    # for values less then (1, ..., 0)
-    # fills in the leading digits with 0
-    while len(max_converted) != len(currency):
-        max_converted.insert(0, 0)
+    return tuple(map(tuple, max_converted))
 
 
 def getMaxVal(currency):
