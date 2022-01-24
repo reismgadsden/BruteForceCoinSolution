@@ -1,0 +1,5 @@
+Desired Value: 40; Denominations: [25, 20, 10, 5, 1]; Best possible change: (0, 2, 0, 0, 0)
+Desired Value: 69; Denominations: [40, 28, 13, 2, 1]; Best possible change: (0, 2, 1, 0, 0)
+Desired Value: 39; Denominations: [14, 9, 3, 1]; Best possible change: (0, 4, 1, 0)
+Desired Value: 58; Denominations: [29, 8, 5, 4, 1]; Best possible change: (2, 0, 0, 0, 0)
+Desired Value: 84; Denominations: [24, 17, 7, 4, 1]; Best possible change: (3, 0, 0, 3, 0)

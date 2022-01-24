@@ -44,7 +44,9 @@ def main():
             break
         else:
             print("Invalid input! Try again.")
-    print(bruteForceChange(val, currency))
+    f = open("results.txt", "a")
+    f.write("Desired Value: " + str(val) + "; Denominations: " + str(currency) + "; Best possible change: " + str(bruteForceChange(val, currency)) + "\n")
+    f.close()
 
 
 
@@ -71,19 +73,21 @@ def bruteForceChange(val, currency):
 
 def convertToChange(val, currency):
     # adds values up to max value
-    counter = len(currency) - 1
+    counter = 1
     max_val = val
     max_converted = []
     while True:
-        mod_val = max_val % (currency[counter] + 1)
-        max_val = max_val // (currency[counter] + 1)
-        if len(max_converted) != len(currency):
-            max_converted.insert(0, mod_val)
+        mod_val = max_val % (currency[-counter] + 1)
+        max_val = max_val // (currency[-counter] + 1)
+        max_converted.insert(0, mod_val)
         if max_val == 0 or max_val == -1:
             break
-        counter -= 1
-        if counter == 0:
-            counter = len(currency) - 1
+        counter += 1
+        if counter > len(currency):
+            counter = 1
+
+    # for values less then (1, ..., 0)
+    # fills in the leading digits with 0
     while len(max_converted) != len(currency):
         max_converted.insert(0, 0)
 
