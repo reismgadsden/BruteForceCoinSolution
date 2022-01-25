@@ -11,16 +11,18 @@ import numpy as np
 NUM_PATTERN = re.compile("^[0-9]*$")
 
 def main():
+    #get and validate user input for desired value
     val = 0
     user_input = ""
     while True:
         user_input = input("Please enter the currency value: ")
-        if re.fullmatch(NUM_PATTERN, user_input.strip()) is not None:
+        if re.fullmatch(NUM_PATTERN, user_input.strip()) is not None: # regex to make sure its a number
            val = int(user_input)
            break
         else:
             print("Invalid input! Try again.")
 
+    # get, validate, and order user input for denominations
     currency = []
     print("Please enter the denominations of your coins. Enter 'q' when finished.")
     while True:
@@ -44,22 +46,28 @@ def main():
             break
         else:
             print("Invalid input! Try again.")
+
+    # open results.txt and append output with it
     f = open("results.txt", "a")
     f.write("Desired Value: " + str(val) + "; Denominations: " + str(currency) + "; Best possible change: " + str(bruteForceChange(val, currency)) + "\n")
     f.close()
 
 
-
+# runs through all possible configurations and returns the configurations with the least coins that matches the value
 def bruteForceChange(val, currency):
     max_val = getMaxVal(currency)
     smallest_number = np.inf
     best_change = None
 
     for i in range(0, max_val + 1):
+        # gets the coins that match a corresponding configuration and calculates the actual coin value of such a
+        # configuration
         coins = convertToChange(i, currency)
         coin_value = getTotalValue(currency, coins)
+
         if coin_value == val:
             num_coins = 0
+            # finds the smallest amount of coins by comparing to a previous smallest number
             for x in coins:
                 num_coins += x
             if num_coins < smallest_number:
@@ -70,13 +78,13 @@ def bruteForceChange(val, currency):
 
 
 
-
+# converts a specific value (configuration #) to the corresponding configuration
 def convertToChange(val, currency):
-    # adds values up to max value
     counter = 1
     max_val = val
     max_converted = []
     while True:
+        # converts a given value to a configuration relating to the given denominations
         mod_val = max_val % (currency[-counter] + 1)
         max_val = max_val // (currency[-counter] + 1)
         max_converted.insert(0, mod_val)
@@ -94,6 +102,7 @@ def convertToChange(val, currency):
     return tuple(max_converted)
 
 
+#gets the maximum value (max configuration #) of a given denomination set
 def getMaxVal(currency):
     # calculates a max value for the given array
     max_val = 1
@@ -102,6 +111,7 @@ def getMaxVal(currency):
     return max_val - 1
 
 
+#calculates the total value of a configuration
 def getTotalValue(currency, num_coins):
     counter = 0
     sum = 0
@@ -112,5 +122,6 @@ def getTotalValue(currency, num_coins):
     return sum
 
 
+# executes the main method if the file is not being imported elsewhere
 if __name__ == "__main__":
     main()
